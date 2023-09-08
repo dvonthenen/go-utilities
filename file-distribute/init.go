@@ -2,7 +2,7 @@
 // Use of this source code is governed by an Apache-2.0 license that can be found in the LICENSE file.
 // SPDX-License-Identifier: Apache-2.0
 
-package main
+package init
 
 import (
 	"flag"
@@ -32,8 +32,6 @@ const (
 
 // Initialization options for this utility.
 type FileDistributeInit struct {
-	SrcDir string
-
 	LogLevel      LogLevel
 	DebugFilePath string
 }
@@ -43,20 +41,18 @@ The Init function for this utility.
 Allows you to set the logging level and use of a log file.
 Default is output to the console.
 */
-func Init(init *FileDistributeInit) {
+func Init(init FileDistributeInit) {
 	if init.LogLevel == LogLevelDefault {
 		init.LogLevel = LogLevelStandard
 	}
 
 	klog.InitFlags(nil)
-
 	flag.Set("v", strconv.FormatInt(int64(init.LogLevel), 10))
 	if init.DebugFilePath != "" {
 		flag.Set("logtostderr", "false")
 		flag.Set("log_file", init.DebugFilePath)
 	}
-
-	flag.StringVar(&init.SrcDir, "src", "", "The source directory for all music files")
-
 	flag.Parse()
+
+	klog.V(4).Infof("HELLO")
 }
