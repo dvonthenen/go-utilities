@@ -1,0 +1,6 @@
+github.com/antzucaro/matchr v0.0.0-20221106193745-7bed6ef61ef9 h1:bdN23nM++VfIw4oCAxyEmUdfwKgMFcHMVu4a7T6CNOQ=
+github.com/antzucaro/matchr v0.0.0-20221106193745-7bed6ef61ef9/go.mod h1:v3ZDlfVAL1OrkKHbGSFFK60k0/7hruHPDq2XMs9Gu6U=
+github.com/go-logr/logr v1.2.0 h1:QK40JKJyMdUDz+h+xvCsru/bJhvG0UxvePV0ufL/AcE=
+github.com/go-logr/logr v1.2.0/go.mod h1:jdQByPbusPIv2/zmleS9BjJVeZ6kBagPoEUsqbVz/1A=
+k8s.io/klog/v2 v2.100.1 h1:7WCHKK6K8fNhTqfBhISHQ97KrnJNFZMcQvKp7gP/tmg=
+k8s.io/klog/v2 v2.100.1/go.mod h1:y1WjHnz7Dj687irZUWR/WLkLc5N1YHtjLdmgWjndZn0=
