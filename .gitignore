@@ -1,6 +1,17 @@
 # If you prefer the allow list template instead of the deny list, see community template:
 # https://github.com/github/gitignore/blob/main/community/Golang/Go.AllowList.gitignore
 #
+
+# Artifacts generated from this project
+diff-directory/cmd/diff-directory/diff-directory
+diff-directory/cmd/diff-directory/diff-directory/src
+diff-directory/cmd/diff-directory/diff-directory/dst
+file-distribute/cmd/file-distribute/file-distribute
+how-alike/cmd/how-alike/how-alike
+
+# random artifacts
+.DS_Store
+
 # Binaries for programs and plugins
 *.exe
 *.exe~
