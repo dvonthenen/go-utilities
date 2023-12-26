@@ -202,7 +202,23 @@ func (d *Diff) resolveDifferences(diffs *[]*DiffCompare) error {
 			}
 
 			klog.V(4).Infof("[SRC -> DST] Copied %s to %s\n", diff.SrcFile.Path, newDst)
-			klog.Infof("[SRC -> DST] Copied %s\n", diff.SrcFile.RelPath)
+			if d.options.DryRun {
+				klog.Infof("[SRC -> DST] Diff: %s\n", diff.SrcFile.RelPath)
+			} else {
+				klog.Infof("[SRC -> DST] Copying... %s\n", diff.SrcFile.RelPath)
+			}
+			if diff.SrcFile.Hash != "" && diff.SrcFile.Hash != diff.DstFile.Hash {
+				klog.Infof("\tHash mismatch: %s -> %s\n", diff.SrcFile.Hash, diff.DstFile.Hash)
+			} else {
+				srcTime := (*diff.SrcFile.Attr).ModTime()
+				dstTime := (*diff.DstFile.Attr).ModTime()
+				klog.Infof("\tSrc Mod Time: %d-%02d-%02dT%02d:%02d:%02d != Dst Mod Time: %d-%02d-%02dT%02d:%02d:%02d\n\n",
+					srcTime.Year(), srcTime.Month(), srcTime.Day(),
+					srcTime.Hour(), srcTime.Minute(), srcTime.Second(),
+					dstTime.Year(), dstTime.Month(), dstTime.Day(),
+					dstTime.Hour(), dstTime.Minute(), dstTime.Second(),
+				)
+			}
 		case DIRECTION_DST_TO_SRC:
 			if d.options.SkipSrcUpdate {
 				klog.V(3).Infof("Skipping src update because SkipSrcUpdate is true\n")
@@ -222,10 +238,41 @@ func (d *Diff) resolveDifferences(diffs *[]*DiffCompare) error {
 			}
 
 			klog.V(4).Infof("[DST -> SRC] Copied %s to %s\n", diff.DstFile.Path, newSrc)
-			klog.Infof("[DST -> SRC] Copied %s\n", diff.DstFile.RelPath)
+			if d.options.DryRun {
+				klog.Infof("[DST -> SRC] Diff: %s\n", diff.DstFile.RelPath)
+			} else {
+				klog.Infof("[DST -> SRC] Copying... %s\n", diff.DstFile.RelPath)
+			}
+			if diff.SrcFile.Hash != "" && diff.SrcFile.Hash != diff.DstFile.Hash {
+				klog.Infof("\tHash mismatch: %s -> %s\n", diff.SrcFile.Hash, diff.DstFile.Hash)
+			} else {
+				srcTime := (*diff.SrcFile.Attr).ModTime()
+				dstTime := (*diff.DstFile.Attr).ModTime()
+				klog.Infof("\tSrc Mod Time: %d-%02d-%02dT%02d:%02d:%02d != Dst Mod Time: %d-%02d-%02dT%02d:%02d:%02d\n\n",
+					srcTime.Year(), srcTime.Month(), srcTime.Day(),
+					srcTime.Hour(), srcTime.Minute(), srcTime.Second(),
+					dstTime.Year(), dstTime.Month(), dstTime.Day(),
+					dstTime.Hour(), dstTime.Minute(), dstTime.Second(),
+				)
+			}
 		default:
 			klog.Errorf("Unknown direction: %d\n", diff.Direction)
 			return ErrUnknownDirection
+		}
+	}
+	if len(*diffs) > 0 {
+		klog.Infof("\n\n")
+		klog.Infof("Copied files:\n")
+		for _, diff := range *diffs {
+			switch diff.Direction {
+			case DIRECTION_SRC_TO_DST:
+				klog.Infof("[SRC -> DST] Copied %s\n", diff.SrcFile.RelPath)
+			case DIRECTION_DST_TO_SRC:
+				klog.Infof("[DST -> SRC] Copied %s\n", diff.DstFile.RelPath)
+			default:
+				klog.Errorf("Unknown direction: %d\n", diff.Direction)
+				return ErrUnknownDirection
+			}
 		}
 	}
 	return nil
