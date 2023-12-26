@@ -207,7 +207,9 @@ func (d *Diff) resolveDifferences(diffs *[]*DiffCompare) error {
 			} else {
 				klog.Infof("[SRC -> DST] Copying... %s\n", diff.SrcFile.RelPath)
 			}
-			if diff.SrcFile.Hash != "" && diff.SrcFile.Hash != diff.DstFile.Hash {
+			if diff.DstFile == nil {
+				klog.Infof("\tDestination file does not exist\n")
+			} else if diff.SrcFile.Hash != "" && diff.SrcFile.Hash != diff.DstFile.Hash {
 				klog.Infof("\tHash mismatch: %s -> %s\n", diff.SrcFile.Hash, diff.DstFile.Hash)
 			} else {
 				srcTime := (*diff.SrcFile.Attr).ModTime()
@@ -243,18 +245,21 @@ func (d *Diff) resolveDifferences(diffs *[]*DiffCompare) error {
 			} else {
 				klog.Infof("[DST -> SRC] Copying... %s\n", diff.DstFile.RelPath)
 			}
-			if diff.SrcFile.Hash != "" && diff.SrcFile.Hash != diff.DstFile.Hash {
+			if diff.SrcFile == nil {
+				klog.Infof("\tSource file does not exist\n")
+			} else if diff.SrcFile.Hash != "" && diff.SrcFile.Hash != diff.DstFile.Hash {
 				klog.Infof("\tHash mismatch: %s -> %s\n", diff.SrcFile.Hash, diff.DstFile.Hash)
 			} else {
 				srcTime := (*diff.SrcFile.Attr).ModTime()
 				dstTime := (*diff.DstFile.Attr).ModTime()
-				klog.Infof("\tSrc Mod Time: %d-%02d-%02dT%02d:%02d:%02d != Dst Mod Time: %d-%02d-%02dT%02d:%02d:%02d\n\n",
+				klog.Infof("\tSrc Mod Time: %d-%02d-%02dT%02d:%02d:%02d != Dst Mod Time: %d-%02d-%02dT%02d:%02d:%02d\n",
 					srcTime.Year(), srcTime.Month(), srcTime.Day(),
 					srcTime.Hour(), srcTime.Minute(), srcTime.Second(),
 					dstTime.Year(), dstTime.Month(), dstTime.Day(),
 					dstTime.Hour(), dstTime.Minute(), dstTime.Second(),
 				)
 			}
+			klog.Infof("\n")
 		default:
 			klog.Errorf("Unknown direction: %d\n", diff.Direction)
 			return ErrUnknownDirection
