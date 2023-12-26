@@ -53,4 +53,6 @@ func Init(init FileDistributeInit) {
 		flag.Set("log_file", init.DebugFilePath)
 	}
 	flag.Parse()
+
+	klog.V(4).Infof("Logging enabled")
 }

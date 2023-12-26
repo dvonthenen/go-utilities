@@ -31,7 +31,7 @@ const (
 )
 
 // Initialization options for this utility.
-type FileDistributeInit struct {
+type DiffDirectoryInit struct {
 	LogLevel      LogLevel
 	DebugFilePath string
 }
@@ -41,7 +41,7 @@ The Init function for this utility.
 Allows you to set the logging level and use of a log file.
 Default is output to the console.
 */
-func Init(init FileDistributeInit) {
+func Init(init DiffDirectoryInit) {
 	if init.LogLevel == LogLevelDefault {
 		init.LogLevel = LogLevelStandard
 	}
