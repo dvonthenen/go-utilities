@@ -4,8 +4,8 @@
 
 # Artifacts generated from this project
 diff-directory/cmd/diff-directory/diff-directory
-diff-directory/cmd/diff-directory/diff-directory/src
-diff-directory/cmd/diff-directory/diff-directory/dst
+diff-directory/cmd/diff-directory/src
+diff-directory/cmd/diff-directory/dst
 file-distribute/cmd/file-distribute/file-distribute
 how-alike/cmd/how-alike/how-alike
 
