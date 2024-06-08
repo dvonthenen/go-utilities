@@ -173,7 +173,7 @@ func (d *Diff) fileComparison(diff *[]*DiffCompare) error {
 	for key, val := range dstMap {
 		src := srcMap[key]
 		if src == nil {
-			klog.V(3).Infof("[ADDING] %s because src is missing file.", val.Path)
+			klog.V(3).Infof("[ADDING] %s because src is missing file.\n", val.Path)
 			*diff = append(*diff, &DiffCompare{
 				SrcFile:   nil,
 				DstFile:   val,
