@@ -14,6 +14,22 @@ import (
 	diffdirectory "github.com/dvonthenen/go-utilities/diff-directory/pkg/diff-directory"
 )
 
+func printHelp() {
+	fmt.Println("Usage: diff-directory -src <src> -dst <dst> [-skipsrc] [-dryrun] [-logging <level>]")
+	fmt.Println("Options:")
+	fmt.Println("  -src string")
+	fmt.Println("    	The source directory for all music files")
+	fmt.Println("  -dst string")
+	fmt.Println("    	The destination directory for all music files")
+	fmt.Println("  -skipsrc")
+	fmt.Println("    	Skip updating the source of the diff")
+	fmt.Println("  -dryrun")
+	fmt.Println("    	Do a run run only... don't update/copy any files")
+	fmt.Println("  -logging int")
+	fmt.Println("    	Set logging level: 2 - standard (default), 7 - very verbose")
+
+}
+
 func main() {
 	// flags
 	var skipSrc bool
@@ -38,42 +54,63 @@ func main() {
 		LogLevel: initlib.LogLevel(logging),
 	})
 
+	// src
 	if len(srcDir) == 0 {
 		fmt.Println("Provided src path is empty. Must provide a valid directory.")
+		fmt.Println()
+		printHelp()
 		os.Exit(1)
 	}
 
-	// src
 	absSrcPath, err := filepath.Abs(srcDir)
 	if err != nil {
-		fmt.Println("Source filepath.Abs failed. Err: %v\n", err)
+		fmt.Printf("Source filepath.Abs failed. Err: %v\n", err)
+		fmt.Println()
+		printHelp()
 		os.Exit(1)
 	}
 
 	stat, err := os.Stat(absSrcPath)
 	if err != nil {
-		fmt.Println("Invalid src=%s directory. Must provide a valid directory.", absSrcPath)
+		fmt.Printf("Invalid src=%s directory. Must provide a valid directory.\n", absSrcPath)
+		fmt.Println()
+		printHelp()
 		os.Exit(1)
 	}
 	if !stat.IsDir() {
-		fmt.Println("Invalid src=%s directory. Must provide a valid directory.", absSrcPath)
+		fmt.Printf("Invalid src=%s directory. Must provide a valid directory.\n", absSrcPath)
+		fmt.Println()
+		printHelp()
 		os.Exit(1)
 	}
 
 	//dst
+	if len(dstDir) == 0 {
+		fmt.Println("Provided dst path is empty. Must provide a valid directory.")
+		fmt.Println()
+		printHelp()
+		os.Exit(1)
+	}
+
 	absDstPath, err := filepath.Abs(dstDir)
 	if err != nil {
-		fmt.Println("Destination filepath.Abs failed. Err: %v\n", err)
+		fmt.Printf("Destination filepath.Abs failed. Err: %v\n", err)
+		fmt.Println()
+		printHelp()
 		os.Exit(1)
 	}
 
 	stat, err = os.Stat(absDstPath)
 	if err != nil {
-		fmt.Println("Invalid dst=%s directory. Must provide a valid directory.", absDstPath)
+		fmt.Printf("Invalid dst=%s directory. Must provide a valid directory.\n", absDstPath)
+		fmt.Println()
+		printHelp()
 		os.Exit(1)
 	}
 	if !stat.IsDir() {
-		fmt.Println("Invalid dst=%s directory. Must provide a valid directory.", absDstPath)
+		fmt.Printf("Invalid dst=%s directory. Must provide a valid directory.\n", absDstPath)
+		fmt.Println()
+		printHelp()
 		os.Exit(1)
 	}
 
